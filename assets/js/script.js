@@ -120,19 +120,51 @@ var passwordCriteria = function () {
 
   // An object to hold the different password criteria.
   var passwordCriteriaOptions = {
+    length: passwordLength,
     special: isSpecialCharacter,
     numeric: isnumericCharacter,
     lower: isLowerCase,
     upper: isUpperCase,
   };
-
   return passwordCriteriaOptions;
 };
 
+var randomIndexing = function (passwordArray) {
+  var randomIndexNumber = Math.floor(Math.random() * passwordArray.length);
+  var randomPlacement = passwordArray[randomIndexNumber];
+  return randomPlacement;
+};
 
 
-// Create to password based on input criterias
-var generatePassword = function () {};
+// Create to password based on input criteria
+var generatePassword = function () {
+  var finalPassword = [];
+  var holderArray = [];
+  var criteriaSelected = passwordCriteria();
+
+  if (criteriaSelected.special) {
+    // From the array of special characters,randomly add to another array.
+    holderArray.push(randomIndexing(specialCharacters));
+  }
+  if (criteriaSelected.numeric) {
+    holderArray = randomIndexing(numericCharacters);
+  }
+  if (criteriaSelected.lower) {
+    holderArray = randomIndexing(lowerCaseCharacters);
+  }
+  if (criteriaSelected.upper) {
+    holderArray = randomIndexing(upperCaseCharacters);
+  }
+
+  for (var i = 0; i < criteriaSelected.length; i++)
+  {
+    finalPassword[i] = 
+  }
+
+  var combinedResultArray = finalPassword.join('');
+
+  return combinedResultArray;
+};
 
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
