@@ -120,19 +120,76 @@ var passwordCriteria = function () {
 
   // An object to hold the different password criteria.
   var passwordCriteriaOptions = {
+    length: passwordLength,
     special: isSpecialCharacter,
     numeric: isnumericCharacter,
     lower: isLowerCase,
     upper: isUpperCase,
   };
-
   return passwordCriteriaOptions;
 };
 
+// A function to randomly select a character from the declared variable array.
+var randomIndexing = function (passwordArray) {
+  var randomIndexNumber = Math.floor(Math.random() * passwordArray.length);
+  var randomCharacterSelected = passwordArray[randomIndexNumber];
+  return randomCharacterSelected;
+};
+
+// A function to shuffle the contents of the array. 
+var shuffleArray = function (array) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+  return array;
+}
 
 
-// Create to password based on input criterias
-var generatePassword = function () {};
+// Create to password based on input criteria
+var generatePassword = function () {
+  var additionalArray = []; 
+  var pickedCharactersArrayList = [];
+  var finalPassword = [];  
+  var requiredCharactersArray = [];
+
+  var criteriaSelected = passwordCriteria();
+
+  // Create two seperate arrays to hold the picked criteria and a list of remaining picked characters
+  if (criteriaSelected.special) {
+    pickedCharactersArrayList = pickedCharactersArrayList.concat(specialCharacters);
+    requiredCharactersArray.push(randomIndexing(specialCharacters));
+  }
+  if (criteriaSelected.numeric) {
+    pickedCharactersArrayList = pickedCharactersArrayList.concat(numericCharacters);
+    requiredCharactersArray.push(randomIndexing(numericCharacters));
+  }
+  if (criteriaSelected.lower) {
+    pickedCharactersArrayList = pickedCharactersArrayList.concat(lowerCaseCharacters);
+    requiredCharactersArray.push(randomIndexing(lowerCaseCharacters));
+  }
+  if (criteriaSelected.upper) {
+    pickedCharactersArrayList = pickedCharactersArrayList.concat(upperCaseCharacters);
+    requiredCharactersArray.push(randomIndexing(upperCaseCharacters));
+  }
+
+  // Populate the remaining array after including the required password criteria characters.
+  for (var i = 0; i < (criteriaSelected.length - requiredCharactersArray.length); i++) {
+    additionalArray.push(randomIndexing(pickedCharactersArrayList));
+  }
+
+  // Combine both arrays. 
+  finalPassword = requiredCharactersArray.concat(additionalArray);
+
+  finalPassword = shuffleArray(finalPassword);
+
+  // Combined array into a string.
+  var combinedResultArray = finalPassword.join('');
+
+  return combinedResultArray;
+};
 
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
